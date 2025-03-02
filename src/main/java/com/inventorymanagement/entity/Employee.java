@@ -35,6 +35,6 @@ public class Employee{
     private String inventoryCode;
     @Column(name = "createAt")
     private LocalDateTime createAt;
-    @Column(name = "isBlock")
+    @Column(name = "is_block")
     private Boolean isBlock;
 }

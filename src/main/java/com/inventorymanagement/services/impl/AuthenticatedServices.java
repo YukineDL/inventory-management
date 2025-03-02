@@ -1,6 +1,7 @@
 package com.inventorymanagement.services.impl;
 
 import com.inventorymanagement.SecurityUtils;
+import com.inventorymanagement.constant.Constants;
 import com.inventorymanagement.constant.RoleEnum;
 import com.inventorymanagement.dto.AuthenDTO;
 import com.inventorymanagement.dto.RegisterDTO;
@@ -60,9 +61,10 @@ public class AuthenticatedServices implements IAuthenticatedServices {
         newEmployee.setUsername(registerDTO.getUsername());
         newEmployee.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         newEmployee.setRoleCode(registerDTO.getRoleCode());
-        newEmployee.setUsername(registerDTO.getName());
+        newEmployee.setName(registerDTO.getName());
         newEmployee.setInventoryCode(registerDTO.getInventoryCode());
         newEmployee.setCode(getNewEmployeeCode());
+        newEmployee.setIsBlock(Constants.UNLOCK);
         employeeRepository.save(newEmployee);
     }
     private String getNewEmployeeCode(){
