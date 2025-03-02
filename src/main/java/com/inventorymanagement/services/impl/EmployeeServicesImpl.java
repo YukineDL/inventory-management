@@ -1,7 +1,9 @@
 package com.inventorymanagement.services.impl;
 
 import com.inventorymanagement.SecurityUtils;
+import com.inventorymanagement.constant.Constants;
 import com.inventorymanagement.constant.RoleEnum;
+import com.inventorymanagement.dto.EmployeeUpdateDTO;
 import com.inventorymanagement.entity.Employee;
 import com.inventorymanagement.exception.ExceptionMessage;
 import com.inventorymanagement.exception.InventoryException;
@@ -53,5 +55,80 @@ public class EmployeeServicesImpl implements IEmployeeServices {
             );
         }
         return employee.get();
+    }
+
+    @Override
+    public Employee findByCode(String authHeader, String code) {
+        Employee employee = this.getFullInformation(authHeader);
+        if(!LIST_MANAGER.contains(employee.getRoleCode())){
+            if(!employee.getCode().equals(code)){
+                throw new InventoryException(ExceptionMessage.NO_PERMISSION,
+                        ExceptionMessage.messages.get(ExceptionMessage.NO_PERMISSION));
+            }
+        }
+        return employee;
+    }
+
+    @Override
+    public void updateByCode(String authHeader, String employeeCode, EmployeeUpdateDTO employeeUpdateDTO) {
+        Employee employee = this.getFullInformation(authHeader);
+        if(!LIST_MANAGER.contains(employee.getRoleCode())){
+            throw new InventoryException(
+                    ExceptionMessage.NO_PERMISSION,
+                    ExceptionMessage.messages.get(ExceptionMessage.NO_PERMISSION)
+            );
+        }
+        Optional<Employee> employeeUpdate = employeeRepository.findByCode(employeeCode);
+        if(employeeUpdate.isEmpty()){
+            throw new InventoryException(
+                    ExceptionMessage.EMPLOYEE_NOT_EXISTED,
+                    ExceptionMessage.messages.get(ExceptionMessage.EMPLOYEE_NOT_EXISTED)
+            );
+        }
+        Employee employeeUpdated = employeeUpdate.get();
+        employeeUpdated.setName(employeeUpdateDTO.getName());
+        employeeUpdated.setRoleCode(employeeUpdateDTO.getRoleCode());
+        employeeUpdated.setPhoneNumber(employeeUpdateDTO.getPhoneNumber());
+        employeeRepository.save(employeeUpdated);
+    }
+
+    @Override
+    public void lockAccount(String authHeader, String employeeCode) {
+        Employee me = this.getFullInformation(authHeader);
+        if(!LIST_MANAGER.contains(me.getRoleCode())){
+            throw new InventoryException(
+                    ExceptionMessage.NO_PERMISSION,
+                    ExceptionMessage.messages.get(ExceptionMessage.NO_PERMISSION)
+            );
+        }
+        Optional<Employee> employee = employeeRepository.findByCode(employeeCode);
+        if(employee.isEmpty()){
+            throw new InventoryException(
+                    ExceptionMessage.EMPLOYEE_NOT_EXISTED,
+                    ExceptionMessage.messages.get(ExceptionMessage.EMPLOYEE_NOT_EXISTED)
+            );
+        }
+        employee.get().setIsBlock(Constants.LOCK);
+        employeeRepository.save(employee.get());
+    }
+
+    @Override
+    public void unlockAccount(String authHeader, String employeeCode) {
+        Employee me = this.getFullInformation(authHeader);
+        if(!LIST_MANAGER.contains(me.getRoleCode())){
+            throw new InventoryException(
+                    ExceptionMessage.NO_PERMISSION,
+                    ExceptionMessage.messages.get(ExceptionMessage.NO_PERMISSION)
+            );
+        }
+        Optional<Employee> employee = employeeRepository.findByCode(employeeCode);
+        if(employee.isEmpty()){
+            throw new InventoryException(
+                    ExceptionMessage.EMPLOYEE_NOT_EXISTED,
+                    ExceptionMessage.messages.get(ExceptionMessage.EMPLOYEE_NOT_EXISTED)
+            );
+        }
+        employee.get().setIsBlock(Constants.UNLOCK);
+        employeeRepository.save(employee.get());
     }
 }

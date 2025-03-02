@@ -3,6 +3,7 @@ package com.inventorymanagement.services.impl;
 import com.inventorymanagement.SecurityUtils;
 import com.inventorymanagement.constant.RoleEnum;
 import com.inventorymanagement.dto.AuthenDTO;
+import com.inventorymanagement.dto.RegisterDTO;
 import com.inventorymanagement.dto.response.AuthenResponseDTO;
 import com.inventorymanagement.entity.Employee;
 import com.inventorymanagement.exception.ExceptionMessage;
@@ -30,7 +31,12 @@ public class AuthenticatedServices implements IAuthenticatedServices {
                     ExceptionMessage.messages.get(ExceptionMessage.USERNAME_INCORRECT)
             );
         }
-
+        if(employee.getIsBlock()){
+            throw new InventoryException(
+                    ExceptionMessage.ACCOUNT_BANNED,
+                    ExceptionMessage.messages.get(ExceptionMessage.ACCOUNT_BANNED)
+            );
+        }
         boolean isCorrect = passwordEncoder.matches(authenDTO.getPassword(), employee.getPassword() );
         if(!isCorrect){
             throw new InventoryException(
@@ -44,16 +50,23 @@ public class AuthenticatedServices implements IAuthenticatedServices {
     }
 
     @Override
-    public void register(AuthenDTO authenDTO) throws InventoryException {
-        if(employeeRepository.existsByUsername(authenDTO.getUsername())){
+    public void register(RegisterDTO registerDTO) throws InventoryException {
+        if(employeeRepository.existsByUsername(registerDTO.getUsername())){
             throw new InventoryException(
                     ExceptionMessage.EMPLOYEE_EXISTED,
                     ExceptionMessage.messages.get(ExceptionMessage.EMPLOYEE_EXISTED));
         }
         Employee newEmployee = new Employee();
-        newEmployee.setUsername(authenDTO.getUsername());
-        newEmployee.setPassword(passwordEncoder.encode(authenDTO.getPassword()));
-        newEmployee.setRoleCode(RoleEnum.ADMIN.name());
+        newEmployee.setUsername(registerDTO.getUsername());
+        newEmployee.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+        newEmployee.setRoleCode(registerDTO.getRoleCode());
+        newEmployee.setUsername(registerDTO.getName());
+        newEmployee.setInventoryCode(registerDTO.getInventoryCode());
+        newEmployee.setCode(getNewEmployeeCode());
         employeeRepository.save(newEmployee);
+    }
+    private String getNewEmployeeCode(){
+        int max = employeeRepository.findAll().size();
+        return "E" + (max + 1);
     }
 }

@@ -11,6 +11,7 @@ public class ExceptionMessage {
     public static String EMPLOYEE_EXISTED = "EMPLOYEE_EXISTED";
     public static String EMPLOYEE_NOT_EXISTED = "EMPLOYEE_NOT_EXISTED";
     public static String NO_PERMISSION = "NO_PERMISSION";
+    public static String ACCOUNT_BANNED = "ACCOUNT_BANNED";
     static {
         messages.put(EXISTED_EMPLOYEE, "Nhân viên đã tồn tại");
         messages.put(INTERNAL_SERVER_ERROR,"Có lỗi xảy ra trong hệ thống !");
@@ -18,5 +19,6 @@ public class ExceptionMessage {
         messages.put(EMPLOYEE_EXISTED,"Nhân viên đã tồn tại");
         messages.put(EMPLOYEE_NOT_EXISTED, "Nhân viên không tồn tại");
         messages.put(NO_PERMISSION,"Bạn không có quyền truy cập ");
+        messages.put(ACCOUNT_BANNED, "Tài khoản đã bị khóa");
     }
 }

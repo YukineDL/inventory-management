@@ -1,6 +1,7 @@
 package com.inventorymanagement.controller;
 
 import com.inventorymanagement.dto.AuthenDTO;
+import com.inventorymanagement.dto.RegisterDTO;
 import com.inventorymanagement.dto.response.ApiResponse;
 import com.inventorymanagement.exception.InventoryException;
 import com.inventorymanagement.services.IAuthenticatedServices;
@@ -16,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticatedController {
     private final IAuthenticatedServices authenticatedServices;
     @PostMapping(value = "/register")
-    public ApiResponse<Object> register(@RequestBody AuthenDTO authenDTO){
-            authenticatedServices.register(authenDTO);
+    public ApiResponse<Object> register(@RequestBody RegisterDTO registerDTO){
+            authenticatedServices.register(registerDTO);
             return ApiResponse.builder()
                     .code("SUCCESS")
                     .message("Thanh cong")
@@ -29,10 +30,5 @@ public class AuthenticatedController {
                     .code("SUCCESS")
                     .result(authenticatedServices.login(authenDTO))
                     .build();
-    }
-    @GetMapping(value = "/decode")
-    public ApiResponse<Object> decode(HttpServletRequest request){
-        String authHeader = request.getHeader("Authorization");
-        return ApiResponse.builder().result(authHeader).build();
     }
 }
