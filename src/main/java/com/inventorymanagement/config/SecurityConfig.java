@@ -23,7 +23,7 @@ import javax.crypto.spec.SecretKeySpec;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig{
-    private final String allowOrigin = "http://localhost:8080/";
+    private final String allowOrigin = "http://localhost:3000/";
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -44,7 +44,7 @@ public class SecurityConfig{
             @Override
             public void addCorsMappings(CorsRegistry registry){
                 registry.addMapping("/**")
-                        .allowedOrigins(allowOrigin)
+                        .allowedOrigins("*")
                         .allowedMethods(HttpMethod.POST.name(),
                                 HttpMethod.GET.name(),
                                 HttpMethod.PUT.name(),
