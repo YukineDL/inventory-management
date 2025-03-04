@@ -19,7 +19,7 @@ public class Employee{
     private Integer id;
     @Column(name = "code")
     private String code;
-    @Column(name = "roleCode")
+    @Column(name = "role_code")
     private String roleCode;
     @Column(name = "name")
     private String name;
@@ -27,11 +27,11 @@ public class Employee{
     private String username;
     @Column(name = "password")
     private String password;
-    @Column(name = "phoneNumber")
+    @Column(name = "phone_number")
     private String phoneNumber;
     @Column(name = "address")
     private String address;
-    @Column(name = "inventoryCode")
+    @Column(name = "inventory_code")
     private String inventoryCode;
     @Column(name = "createAt")
     private LocalDateTime createAt;
