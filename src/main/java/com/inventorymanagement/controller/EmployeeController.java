@@ -4,6 +4,7 @@ import com.inventorymanagement.constant.Constants;
 import com.inventorymanagement.dto.EmployeeUpdateDTO;
 import com.inventorymanagement.dto.response.ApiResponse;
 import com.inventorymanagement.services.IEmployeeServices;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/employees")
+@SecurityRequirement(name = "bearerAuth")
 public class EmployeeController {
     private final IEmployeeServices employeeServices;
     @GetMapping
