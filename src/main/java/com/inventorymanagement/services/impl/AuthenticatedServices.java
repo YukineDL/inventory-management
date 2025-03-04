@@ -64,6 +64,7 @@ public class AuthenticatedServices implements IAuthenticatedServices {
         newEmployee.setName(registerDTO.getName());
         newEmployee.setInventoryCode(registerDTO.getInventoryCode());
         newEmployee.setCode(getNewEmployeeCode());
+        newEmployee.setPhoneNumber(registerDTO.getPhoneNumber());
         newEmployee.setIsBlock(Constants.UNLOCK);
         employeeRepository.save(newEmployee);
     }
