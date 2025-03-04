@@ -20,6 +20,7 @@ public class SecurityUtils {
                         Instant.now().plus(4, ChronoUnit.HOURS).toEpochMilli()
                 ))
                 .claim("role_code", employee.getRoleCode())
+                .claim("employee_code", employee.getCode())
                 .claim("employee_id",employee.getId())
                 .build();
         Payload payload = new Payload(claims.toJSONObject());
